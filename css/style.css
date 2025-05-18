@@ -1,0 +1,504 @@
+/* 基础样式 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Microsoft YaHei', Arial, sans-serif;
+}
+
+body {
+    background-color: #4b5cc4;
+    color: #333;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+/* 头部样式 */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+h1 {
+    color: #1a1a1a;
+    font-size: 28px;
+}
+
+.menu-button {
+    padding: 8px 16px;
+    background-color: #4a6fa5;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.menu-button:hover {
+    background-color: #3a5a80;
+}
+
+/* 游戏容器样式 */
+.game-container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #a1afc9;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.game-info {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    background-color: #f8f8f8;
+    border-bottom: 1px solid #eee;
+}
+
+.current-player {
+    font-weight: bold;
+    color: #4a6fa5;
+}
+
+.score-display {
+    color: #666;
+}
+
+/* 棋盘样式 */
+.board-container {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.board {
+    width: 100%;
+    height: 0;
+    padding-bottom: 100%;
+    position: relative;
+    background-color: #a1afc9;
+}
+
+.row {
+    top: 0;
+    width: 100%;
+    height: 5.26%;
+}
+
+.column {
+    left: 0;
+    width: 5.26%;
+    height: 100%;
+}
+
+.intersection {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 2;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.intersection:hover {
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+.intersection.black-stone {
+    background-color: #000;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.intersection.white-stone {
+    background-color: #fff;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+.intersection.captured {
+    animation: pulse 0.5s;
+}
+
+.intersection.preview {
+    background-color: rgba(255, 255, 0, 0.3);
+    animation: preview 1s;
+}
+
+.intersection.touch-feedback:active {
+    background-color: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%) scale(0.95) !important;
+}
+
+@keyframes pulse {
+    0% { transform: translate(-50%, -50%) scale(1); }
+    50% { transform: translate(-50%, -50%) scale(1.2); }
+    100% { transform: translate(-50%, -50%) scale(1); }
+}
+
+@keyframes preview {
+    0% { transform: translate(-50%, -50%) scale(1); }
+    50% { transform: translate(-50%, -50%) scale(1.2); }
+    100% { transform: translate(-50%, -50%) scale(1); }
+}
+
+/* 控制按钮样式 */
+.controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background-color: #f8f8f8;
+    border-top: 1px solid #eee;
+}
+
+button {
+    padding: 10px 18px;
+    background-color: #4a6fa5;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: #3a5a80;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+#restart-game {
+    background-color: #4a6fa5;
+}
+
+#restart-game:hover {
+    background-color: #4a6fa5;
+}
+
+select {
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+/* 弹窗样式 */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background-color: #fff;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.modal-header h2 {
+    color: #4a6fa5;
+}
+
+.close-btn {
+    padding: 5px 10px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #999;
+}
+
+.close-btn:hover {
+    color: #333;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.menu-list {
+    list-style: none;
+}
+
+.menu-list li {
+    margin-bottom: 10px;
+}
+
+.menu-list a {
+    display: block;
+    padding: 12px 15px;
+    background-color: #f5f7fa;
+    color: #4a6fa5;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.menu-list a:hover {
+    background-color: #e1e7f0;
+}
+
+/* AI难度选择弹窗样式 */
+.ai-difficulty-selection {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.difficulty-option {
+    display: flex;
+    align-items: center;
+}
+
+.difficulty-option input[type="radio"] {
+    margin-right: 10px;
+}
+
+#set-difficulty {
+    width: 100%;
+    padding: 12px;
+    background-color: #4a6fa5;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+#set-difficulty:hover {
+    background-color: #3a5a80;
+}
+
+/* 训练弹窗特殊样式 */
+.training-input {
+    margin: 20px 0;
+}
+
+.training-input label {
+    display: inline-block;
+    width: 100px;
+}
+
+.training-input input {
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+}
+
+#start-training {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+#start-training:hover {
+    background-color: #45a049;
+}
+
+/* 分析弹窗特殊样式 */
+.analysis-body {
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    padding: 20px;
+}
+
+#analysis-content {
+    color: #333;
+    line-height: 1.6;
+}
+
+/* 通知样式 */
+.notification {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #4a6fa5;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 4px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 3000;
+}
+
+.notification.show {
+    opacity: 1;
+}
+
+/* 胜利动画 */
+.victory-animation {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    opacity: 0;
+    transition: all 0.5s ease;
+}
+
+.victory-animation.active {
+    opacity: 1;
+}
+
+.sparkle {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: gold;
+    border-radius: 50%;
+    animation: sparkle 1s infinite;
+}
+
+@keyframes sparkle {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(0);
+        opacity: 0;
+    }
+}
+
+/* AI训练监控面板 */
+.training-monitor {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 300px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    display: none;
+    padding: 15px;
+}
+
+.training-monitor.active {
+    display: block;
+}
+
+.training-stats {
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.stat {
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.stat-label {
+    display: inline-block;
+    width: 80px;
+    color: #666;
+}
+
+.stat-value {
+    font-weight: bold;
+    color: #333;
+}
+
+.training-chart {
+    height: 200px;
+    padding: 10px;
+}
+
+/* 新增的开关按钮样式 */
+#open-training-monitor, #close-training-monitor {
+    padding: 8px 12px;
+    background-color: #4b5cc4;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-right: 70%;
+}
+
+#open-training-monitor:hover, #close-training-monitor:hover {
+    background-color: #45a049;
+}
+
+/* 移动设备适配 */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    .header h1 {
+        font-size: 20px;
+    }
+
+    .intersection {
+        width: 16px;
+        height: 16px;
+    }
+
+    .controls button {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+
+    .modal-content {
+        width: 95%;
+        border-radius: 8px;
+    }
+
+    .training-monitor {
+        width: 250px;
+    }
+}

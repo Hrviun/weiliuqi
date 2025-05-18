@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>围六棋</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>围六棋</h1>
+      <button class="menu-button" id="menu-toggle">菜单</button>
+    </div>
+
+    <div class="game-container">
+      <div class="game-info">
+        <div class="current-player">
+          <span id="player-turn">黑棋</span> 的回合
+        </div>
+        <div class="score-display">
+          黑：<span id="black-score">0</span> | 白：<span id="white-score">0</span>
+        </div>
+      </div>
+
+      <div class="board-container">
+        <div class="board" id="board"></div>
+      </div>
+      <button id="open-training-monitor">打开训练监控</button>
+      <button id="close-training-monitor">关闭训练监控</button>
+
+      <div class="controls">
+        <button id="undo-move">悔棋</button>
+        <button id="restart-game">重新开始</button>
+        <button id="toggle-background-music">背景音乐</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 游戏菜单弹窗 -->
+  <div class="modal" id="menu-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>游戏菜单</h2>
+        <button class="close-btn" id="close-menu">&times;</button>
+      </div>
+      <div class="modal-body">
+        <ul class="menu-list">
+          <li><a href="#" id="new-game">新游戏</a></li>
+          <li><a href="#" id="show-rules">游戏规则</a></li>
+          <li><a href="#" id="ai-mode">切换AI模式</a></li>
+          <li><a href="#" id="save-game">保存游戏</a></li>
+          <li><a href="#" id="load-game">加载游戏</a></li>
+          <li><a href="#" id="export-data">导出训练数据</a></li>
+          <li><a href="#" id="analyze-data">分析训练数据</a></li>
+          <li><a href="#" id="import-data">导入训练数据</a></li>
+          <li><a href="#" id="auto-train">自动训练AI</a></li>
+          <li><a href="#" id="toggle-trained-mode">使用训练模式</a></li>
+          <li><a href="#" id="ai-difficulty">AI难度设置</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI难度设置弹窗 -->
+  <div class="modal" id="ai-difficulty-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>AI难度设置</h2>
+        <button class="close-btn" id="close-ai-difficulty">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="ai-difficulty-selection">
+          <div class="difficulty-option">
+            <input type="radio" id="easy-difficulty" name="difficulty" value="easy">
+            <label for="easy-difficulty">简单</label>
+          </div>
+          <div class="difficulty-option">
+            <input type="radio" id="medium-difficulty" name="difficulty" value="medium" checked>
+            <label for="medium-difficulty">中等</label>
+          </div>
+          <div class="difficulty-option">
+            <input type="radio" id="hard-difficulty" name="difficulty" value="hard">
+            <label for="hard-difficulty">困难</label>
+          </div>
+          <div class="difficulty-option">
+            <input type="radio" id="trained-difficulty" name="difficulty" value="trained">
+            <label for="trained-difficulty">训练模式</label>
+          </div>
+        </div>
+        <button id="set-difficulty">确认</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 训练次数弹窗 -->
+  <div class="modal" id="training-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>选择训练次数</h2>
+        <button class="close-btn" id="close-training-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="training-input">
+          <label for="training-rounds">训练次数：</label>
+          <input type="number" id="training-rounds" min="1" max="1000" value="100">
+        </div>
+        <button id="start-training">开始训练</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 规则弹窗 -->
+  <div class="modal" id="rules-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>围六棋规则</h2>
+        <button class="close-btn" id="close-rules">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>
+          棋盘：19×19的交叉点构成的格子。
+        </p>
+        <p>
+          下棋：双方轮流在交叉点上落子，黑棋先行。
+        </p>
+        <p>
+          胜负判定：
+        </p>
+        <ul>
+          <li>六子连珠获胜：当一方形成6个连续的相同颜色棋子（横、竖、斜）时获胜</li>
+          <li>六子以上连珠：形成超过6个同色连珠同样获胜</li>
+          <li>平局判定：棋盘填满且没有形成六子连珠时，比较双方五子、四子等连珠数量；全部相同则平局</li>
+        </ul>
+        <p>
+          无气规则：
+        </p>
+        <ul>
+          <li>禁止在无气的格子下棋，除非该棋子落下后能使对方棋子无气</li>
+          <li>落子后若使对方棋子无气，对方棋子会被提掉</li>
+          <li>若自身也处于无气状态，则不能在此处落子</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 分析弹窗 -->
+  <div class="modal" id="analysis-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>训练数据分析</h2>
+        <button class="close-btn" id="close-analysis">&times;</button>
+      </div>
+      <div class="modal-body analysis-body">
+        <div id="analysis-content">
+          <p>
+            没有训练数据可分析
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AI训练监控面板 -->
+  <div id="training-monitor" class="training-monitor">
+    <h3>AI训练监控</h3>
+    <div class="training-stats">
+      <div class="stat">
+        训练局数: <span id="training-games">0</span>/<span id="total-games">0</span>
+      </div>
+      <div class="stat">
+        胜利率: <span id="win-rate">0%</span>
+      </div>
+      <div class="stat">
+        平局率: <span id="draw-rate">0%</span>
+      </div>
+      <div class="stat">
+        失败率: <span id="loss-rate">0%</span>
+      </div>
+    </div>
+    <div class="training-chart" id="training-chart"></div>
+  </div>
+
+  <div class="notification" id="notification">
+    <p id="notification-text"></p>
+  </div>
+
+  <audio id="place-sound" src="sounds/place.mp3" preload="auto"></audio>
+  <audio id="capture-sound" src="sounds/capture.mp3" preload="auto"></audio>
+  <audio id="victory-music" src="sounds/victory.mp3" preload="auto"></audio>
+  <audio id="draw-music" src="sounds/draw.mp3" preload="auto"></audio>
+  <audio id="background-music" src="sounds/background.mp3" loop preload="auto"></audio>
+
+  <script src="js/game.js"></script>
+  <script src="js/ai.js"></script>
+  <script src="js/data.js"></script>
+</body>
+</html>
