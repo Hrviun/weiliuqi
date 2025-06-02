@@ -7,8 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('close-menu').addEventListener('click', closeMenu);
   document.getElementById('show-rules').addEventListener('click', showRules);
   document.getElementById('close-rules').addEventListener('click', closeRules);
-  document.getElementById('show-comments').addEventListener('click', showComments);
-  document.getElementById('close-comments').addEventListener('click', closeComments);
   document.getElementById('undo-move').addEventListener('click', undoMove);
   document.getElementById('restart-game').addEventListener('click', restartGame);
   document.getElementById('ai-mode').addEventListener('click', toggleAIMode);
@@ -724,15 +722,7 @@ function showRules() {
 function closeRules() {
   document.getElementById('rules-modal').classList.remove('active');
 }
-// 显示评论
-function showComments() {
-  document.getElementById('comments-modal').classList.add('active');
-}
 
-// 关闭评论
-function closeComments() {
-  document.getElementById('comments-modal').classList.remove('active');
-}
 // 关闭分析
 function closeAnalysis() {
   document.getElementById('analysis-modal').classList.remove('active');
